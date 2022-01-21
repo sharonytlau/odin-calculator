@@ -36,11 +36,17 @@ button {
   cursor: pointer;
 }
 
+#expression {
+  font-size: calc( 0.8 * var(--fontSize-1) );
+  white-space: pre-wrap;
+}
+
 #pad{
   display:flex;
   flex-direction: column;
   justify-content: space-between;
   row-gap: var(--spacing-1);
+  width: calc( 3 * var(--spacing-1) + 4 * var(--width-1));
 }
 
 button:hover{
@@ -67,16 +73,18 @@ button,
   height: var(--width-2);
   display: flex;
   flex-direction: column;
-  padding: 0 var(--spacing-1);
+  padding: var(--spacing-1);
   font-size: var(--fontSize-1); 
 }
 
-#display-screen div{
-  flex: 1;
+#expression {
+  flex-grow: 1;
 }
 
 #result{
   align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
 
 .row.pad {

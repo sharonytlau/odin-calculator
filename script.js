@@ -6,7 +6,7 @@ const validKeys = [...nums, ...operators];
 
 /* html elements */
 
-const resultDiv = document.querySelector('#result');
+const inputDiv = document.querySelector('#result');
 
 const expressionDiv = document.querySelector('#expression');
 
@@ -62,65 +62,76 @@ function getPressedKey(e) {
   if (keyPressed) updateDisplay(e.key);
 }
 
-// function updateNum(key){
-
-// }
-
-
+let lastOperator = '+';
+let lastResult = 0;
 let secondNumFlag = false;
-let previousNum;
+let lastKey;
+
+function updateExpressionFont () {
+    
+  let containerWidth = expressionDiv.parentNode.clientWidth;
+
+  let containerHeight = expressionDiv.parentNode.clientHeight;
+  
+  let originalFontSize = window.getComputedStyle(expressionDiv).fontSize.replace('px','');
+
+  let newCharLength = expressionDiv.textContent.length + inputDiv.textContent.length + 1;
+  
+  newSize = Math.floor(Math.sqrt(containerWidth * containerHeight / (2 * newCharLength) )); 
+  
+  if ( newSize < Number(originalFontSize) ) {
+    expressionDiv.style.fontSize = newSize + 'px';
+  };
+  
+}
 
 function updateDisplay(key) {
 
-  textWidth = resultDiv.offsetWidth;
-  
-  containerWidth = resultDiv.parentNode.clientWidth;
-
-
   if ( secondNumFlag && nums.includes(key)) {
-    console.log('here');
-    resultDiv.textContent = 0;
+    inputDiv.textContent = 0;
     secondNumFlag = false;
   }
 
-  if ( !secondNumFlag && nums.includes(key) && textWidth + 50 < containerWidth )
-    resultDiv.textContent = (parseFloat(resultDiv.textContent.replace(/,/g, '')) * 10 +  Number(key)).toLocaleString('en');
+  if ( !secondNumFlag && nums.includes(key) && inputDiv.textContent.length <= 18 )
+    inputDiv.textContent = (parseFloat(inputDiv.textContent.replace(/,/g, '')) * 10 +  Number(key)).toLocaleString('en');
 
-  if ( !secondNumFlag && operators.includes(key) && operators.some(element => expressionDiv.textContent.includes(element)) ) {
+  if ( operators.includes(key) ) {
   
-    let operator = expressionDiv.textContent.match(/\*|\/|\-|\+/g).at(-1);
-    let a = previousNum;
-    let b = resultDiv.textContent;
+      if ( !operators.includes(lastKey) ) { 
+        updateExpressionFont();
 
-    console.log(a);
-    console.log(b);
+        if (['*', '/'].includes(key) && ['+', '-'].includes(lastOperator)) {
+          expressionDiv.textContent = '(' + expressionDiv.textContent + inputDiv.textContent + ')' + key;
+        } else {
+          expressionDiv.textContent += inputDiv.textContent + key;
+        }
+        
+        inputDiv.textContent = operate( lastOperator, Number(lastResult), 
+                            parseFloat(inputDiv.textContent.replace(/,/g, '')) );
+
+        lastOperator = key;
+        lastResult = inputDiv.textContent;
+    } else {
+      expressionDiv.textContent = expressionDiv.textContent.slice(0,expressionDiv.textContent.length-1) + key;
+    }
     
-    expressionDiv.textContent += resultDiv.textContent + key;
-    resultDiv.textContent = operate( operator, Number(a), Number(b) );
-  } 
-  
-  if (operators.includes(key)) {
-    expressionDiv.textContent = resultDiv.textContent + key;
-    previousNum = Number(resultDiv.textContent);
     secondNumFlag = true;
-  }
-
-
-  // if ( !secondNumFlag && operators.some(element => expressionDiv.textContent.includes(element)) && operators.includes(key) ) {
     
-  //   console.log(a);
-  //   console.log(b);
+  } 
 
-  //   resultDiv.textContent = operate( operator, Number(a), Number(b) );
-
-
-
-  
+  lastKey = key; 
 }
+
+function initialize() {
+  expressionDiv.textContent = '';
+  inputDiv.textContent = 0;
+}
+
+initialize();
 
 btns.forEach( item => item.addEventListener('click', getPressedBtn) );
 
-function initialize(e) {
-  displayDiv.textContent = 0;
-}
 window.addEventListener('keydown', getPressedKey);
+
+
+
