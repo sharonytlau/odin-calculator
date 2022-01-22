@@ -6,17 +6,13 @@ const validKeys = [...nums, ...operators];
 
 /* html elements */
 
-const equalBtn = document.getElementById('=');
-
-console.log(equalBtn);
+const resetBtn = document.getElementById('reset');
 
 const inputDiv = document.querySelector('#result');
 
 const expressionDiv = document.querySelector('#expression');
 
 const btns = document.querySelectorAll('button');
-
-
 
 /* operation functions */
 
@@ -26,16 +22,7 @@ const subtract = ( a, b ) => a - b;
 
 const multiply = ( a, b ) => a * b;
 
-const divide = ( a, b ) => {
-  if ( b === 0 ) {
-    // todo handle exception case
-    return 'cannot divide by 0'
-  } else {
-    // todo round the number?
-    return a / b;
-  }
-}
-
+const divide = ( a, b ) => a / b;
 
 function operate( operator, a, b ) {
 
@@ -52,12 +39,16 @@ function operate( operator, a, b ) {
 
 }
 
+/* interaction with page */
+
+let currentOperator = '+';
+let equalFlag = false;
+let currentResult = 0;
+let secondNumFlag = false;
 
 function getPressedBtn (e) {
   updateDisplay(e.target.id);
 }
-
-
 
 function getPressedKey(e) {
   
@@ -66,31 +57,10 @@ function getPressedKey(e) {
   if (keyPressed) updateDisplay(e.key);
 }
 
-let currentOperator = '+';
-let equalFlag = false;
-let currentResult = 0;
-let secondNumFlag = false;
-
-function clearFloat () {
-  floatNumFlag = false;
-  floatNum = 1;
-}
-
-function updateFont (div) {
-    
-  let containerWidth = div.parentNode.clientWidth;
-  
-  let newCharLength = inputDiv.textContent.length + 1;
-  
-  newSize = Math.floor(containerWidth / newCharLength ); 
-  
-  div.style.fontSize = newSize + 'px';
-  
-}
-
 function roundResult(num) {
   return Number.isInteger(num) ? num : num.toPrecision(14)
 }
+
 
 function updateDisplay(key) {
 
@@ -99,6 +69,12 @@ function updateDisplay(key) {
           parseFloat(inputDiv.textContent) );
     
     expressionDiv.textContent += inputDiv.textContent + key;
+
+    if ( currentResult === Infinity ) {
+      alert('Division by zero is undefined');
+      initialize();
+      return;
+    }
 
     inputDiv.textContent = roundResult(currentResult);
 
@@ -121,7 +97,7 @@ function updateDisplay(key) {
       secondNumFlag = false;
   
       floatNumFlag = false;
-      
+
     }
 
     if ( !secondNumFlag ) {
@@ -149,7 +125,9 @@ function updateDisplay(key) {
         currentResult = currentResult.toPrecision(14)
       }
       
-      inputDiv.textContent = currentResult;
+      if ( currentResult === Infinity)
+
+      inputDiv.textContent = roundResult(currentResult);
 
     }
 
@@ -175,6 +153,8 @@ function initialize() {
 initialize();
 
 btns.forEach( item => item.addEventListener('click', getPressedBtn) );
+
+resetBtn.addEventListener('click', initialize);
 
 window.addEventListener('keydown', getPressedKey);
 

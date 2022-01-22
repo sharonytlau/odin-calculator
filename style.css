@@ -20,7 +20,6 @@ html{
 
 
 body {
-  font-family: var(--font-Family-mono);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,6 +33,10 @@ button {
   font-family: var(--font-Family-mono);
   font-size: var(--fontSize-1);
   cursor: pointer;
+}
+
+#reset {
+  
 }
 
 #expression {
@@ -56,6 +59,7 @@ button:hover{
 button,
 #display-screen
 {
+  font-family: var(--font-Family-mono);
   background-color: var(--color-primary);
   border: solid 1px black;
   border-radius: var(--borderRadius);
