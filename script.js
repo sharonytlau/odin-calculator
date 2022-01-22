@@ -6,8 +6,6 @@ const validKeys = [...nums, ...operators];
 
 /* html elements */
 
-const resetBtn = document.getElementById('reset');
-
 const inputDiv = document.querySelector('#result');
 
 const expressionDiv = document.querySelector('#expression');
@@ -63,6 +61,12 @@ function roundResult(num) {
 
 
 function updateDisplay(key) {
+
+  if ( key === 'reset' ) initialize();
+
+  if ( key === 'delete' && !equalFlag && inputDiv.textContent !== '0') {
+    inputDiv.textContent = ( inputDiv.textContent.length > 1 ) ? inputDiv.textContent.slice(0, inputDiv.textContent.length-1) : 0;
+  };
 
   if ( key === '=' && !equalFlag ) {
     currentResult = operate( currentOperator, Number(currentResult), 
@@ -153,8 +157,6 @@ function initialize() {
 initialize();
 
 btns.forEach( item => item.addEventListener('click', getPressedBtn) );
-
-resetBtn.addEventListener('click', initialize);
 
 window.addEventListener('keydown', getPressedKey);
 
