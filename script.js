@@ -64,7 +64,7 @@ function getPressedKey(e) {
 
 let currentOperator = '+';
 let lastOperator;
-let lastResult = 0;
+let currentResult = 0;
 let secondNumFlag = false;
 let floatNumFlag = false;
 let floatNum = 1;
@@ -104,20 +104,11 @@ function updateDisplay(key) {
 
     if ( !secondNumFlag ) {
 
-      if ( !floatNumFlag && key === '.' ) {
-        inputDiv.textContent += key;
-        floatNumFlag = true;
-        floatNum = 1;
-      } else if ( floatNumFlag && key !== '.' ) {
-        // console.log(floatNum);
-        // console.log(parseFloat(inputDiv.textContent) );
-        // console.log( Number(key) / Math.pow(10,floatNum));
-        // console.log(parseFloat(inputDiv.textContent) + Number(key) / Math.pow(10,floatNum));
-        inputDiv.textContent = inputDiv.textContent + Number(key) ;
-        floatNum++;
-      } else if ( !floatNumFlag ) {
-        inputDiv.textContent =  parseFloat(inputDiv.textContent) * 10 +  Number(key) ;
-      }
+      if ( ( inputDiv.textContent.includes('.') && key === '.' ) 
+            || inputDiv.textContent.length === 15 ) return;
+  
+      inputDiv.textContent = ( key != '.' && inputDiv.textContent === '0') ? 
+                                          key : inputDiv.textContent + key ;
   
     }
 
@@ -126,10 +117,15 @@ function updateDisplay(key) {
   if ( operators.includes(key) ) {
       
     if ( !secondNumFlag ) {
-      inputDiv.textContent = operate( currentOperator, Number(lastResult), 
+      currentResult = operate( currentOperator, Number(currentResult), 
                             parseFloat(inputDiv.textContent) );
 
-      lastResult = inputDiv.textContent;
+      if ( ! Number.isInteger(currentResult) ) {
+        currentResult = currentResult.toPrecision(14)
+      }
+      
+      inputDiv.textContent = currentResult;
+
     }
 
     currentOperator = key;
