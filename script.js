@@ -70,7 +70,7 @@ function updateDisplay(key) {
 
   if ( key === 'reset' ) initialize();
 
-  if ( key === 'delete' && !equalFlag && inputDiv.textContent !== '0') {
+  if ( key === 'delete' && !equalFlag && !secondNumFlag && inputDiv.textContent !== '0') {
     inputDiv.textContent = ( inputDiv.textContent.length > 1 ) ? inputDiv.textContent.slice(0, inputDiv.textContent.length-1) : 0;
   };
 
