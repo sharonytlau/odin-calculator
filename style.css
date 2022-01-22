@@ -77,7 +77,6 @@ button,
 
 #expression {
   font-size: calc( 0.7 * var(--fontSize-2) );
-  white-space: pre-wrap;
 }
 
 #pad{
@@ -122,6 +121,10 @@ button,
 
 #expression {
   flex-grow: 1;
+  overflow-x:auto;
+  width: 100%;
+  text-align: right;
+  white-space: nowrap;
 }
 
 #result{

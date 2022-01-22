@@ -56,15 +56,16 @@ function getPressedKey(e) {
 
   if ( e.ctrlKey ) return;
 
-  const keyPressed = document.getElementById(`${e.key}`);
+  let key = (e.key === 'Backspace') ? 'delete' : e.key;
+
+  let keyPressed = document.getElementById(key);
 
   if (keyPressed) keyPressed.click();  
 
 }
 
 function roundResult(num) {
-  num = Number(num);
-  return  parseFloat(num.toPrecision(14))
+  return  parseFloat(Number(num).toPrecision(14))
 }
 
 
@@ -149,7 +150,7 @@ function updateDisplay(key) {
     }
 
     currentOperator = key;
-    expressionDiv.textContent = inputDiv.textContent + key;
+    expressionDiv.textContent = inputDiv.textContent + key.replace('*', '×').replace('/', '÷');
 
     secondNumFlag = true;
     floatNumFlag = false;
