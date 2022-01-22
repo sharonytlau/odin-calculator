@@ -134,10 +134,6 @@ function updateDisplay(key) {
 
       currentResult = operate( currentOperator, Number(currentResult), 
                             parseFloat(inputDiv.textContent) );
-
-      if ( ! Number.isInteger(currentResult) ) {
-        currentResult = currentResult.toPrecision(14)
-      }
       
       if ( currentResult === Infinity) {
         alert('Division by zero is undefined');
