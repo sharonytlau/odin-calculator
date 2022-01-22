@@ -54,6 +54,8 @@ function getPressedBtn (e) {
 
 function getPressedKey(e) {
 
+  if ( e.ctrlKey ) return;
+
   const keyPressed = document.getElementById(`${e.key}`);
 
   if (keyPressed) keyPressed.click();  
