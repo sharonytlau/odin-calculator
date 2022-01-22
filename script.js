@@ -24,6 +24,8 @@ const divide = ( a, b ) => a / b;
 
 function operate( operator, a, b ) {
 
+  console.log(operator, a, b);
+
   switch (operator){
     case '+':
       return add(a,b);
@@ -45,18 +47,22 @@ let currentResult = 0;
 let secondNumFlag = false;
 
 function getPressedBtn (e) {
+
   updateDisplay(e.target.id);
+
 }
 
 function getPressedKey(e) {
-  
+
   const keyPressed = document.getElementById(`${e.key}`);
 
-  if (keyPressed) updateDisplay(e.key);
+  if (keyPressed) keyPressed.click();  
+
 }
 
 function roundResult(num) {
-  return Number.isInteger(num) ? num : num.toPrecision(14)
+  num = Number(num);
+  return  parseFloat(num.toPrecision(14))
 }
 
 
@@ -69,6 +75,7 @@ function updateDisplay(key) {
   };
 
   if ( key === '=' && !equalFlag ) {
+  
     currentResult = operate( currentOperator, Number(currentResult), 
           parseFloat(inputDiv.textContent) );
     
@@ -129,7 +136,11 @@ function updateDisplay(key) {
         currentResult = currentResult.toPrecision(14)
       }
       
-      if ( currentResult === Infinity)
+      if ( currentResult === Infinity) {
+        alert('Division by zero is undefined');
+        initialize();
+        return;
+      }
 
       inputDiv.textContent = roundResult(currentResult);
 
@@ -159,9 +170,3 @@ initialize();
 btns.forEach( item => item.addEventListener('click', getPressedBtn) );
 
 window.addEventListener('keydown', getPressedKey);
-
-
-
-// if ( key === '=') 
-// expressionDiv.textContent += inputDiv.textContent + key;
-
