@@ -6,6 +6,10 @@ const validKeys = [...nums, ...operators];
 
 /* html elements */
 
+const equalBtn = document.getElementById('=');
+
+console.log(equalBtn);
+
 const inputDiv = document.querySelector('#result');
 
 const expressionDiv = document.querySelector('#expression');
@@ -63,12 +67,9 @@ function getPressedKey(e) {
 }
 
 let currentOperator = '+';
-let lastOperator;
+let equalFlag = false;
 let currentResult = 0;
 let secondNumFlag = false;
-let floatNumFlag = false;
-let floatNum = 1;
-let lastKey;
 
 function clearFloat () {
   floatNumFlag = false;
@@ -87,19 +88,40 @@ function updateFont (div) {
   
 }
 
+function roundResult(num) {
+  return Number.isInteger(num) ? num : num.toPrecision(14)
+}
+
 function updateDisplay(key) {
 
-  if ( !validKeys.includes(key) ) return;
+  if ( key === '=' && !equalFlag ) {
+    currentResult = operate( currentOperator, Number(currentResult), 
+          parseFloat(inputDiv.textContent) );
+    
+    expressionDiv.textContent += inputDiv.textContent + key;
+
+    inputDiv.textContent = roundResult(currentResult);
+
+    equalFlag = true;
+
+    secondNumFlag = true;
+
+  } else if ( !validKeys.includes(key) ) {
+    return;
+  }
 
   if ( nums.includes(key) ) {
 
     if ( secondNumFlag ) {
     
+      if ( equalFlag) initialize();
+
       inputDiv.textContent = 0;
   
       secondNumFlag = false;
   
       floatNumFlag = false;
+      
     }
 
     if ( !secondNumFlag ) {
@@ -115,8 +137,11 @@ function updateDisplay(key) {
   }
 
   if ( operators.includes(key) ) {
+
+    equalFlag = false;
       
     if ( !secondNumFlag ) {
+
       currentResult = operate( currentOperator, Number(currentResult), 
                             parseFloat(inputDiv.textContent) );
 
@@ -139,6 +164,10 @@ function updateDisplay(key) {
 }
 
 function initialize() {
+  currentOperator = '+';
+  equalFlag = false;
+  currentResult = 0;
+  secondNumFlag = false;
   expressionDiv.textContent = '';
   inputDiv.textContent = 0;
 }
@@ -150,4 +179,7 @@ btns.forEach( item => item.addEventListener('click', getPressedBtn) );
 window.addEventListener('keydown', getPressedKey);
 
 
+
+// if ( key === '=') 
+// expressionDiv.textContent += inputDiv.textContent + key;
 
