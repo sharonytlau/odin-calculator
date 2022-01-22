@@ -5,6 +5,7 @@
   --spacing-1: 0.15rem;
   --spacing-2: 0.3rem;
   --spacing-3: 0.9rem;
+  --fontSize-footer: 0.5rem;
   --fontSize-1: 0.7rem;
   --fontSize-2: 1rem;
   --height-1: 1.8rem;
@@ -35,9 +36,11 @@ html{
 
 body {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  margin: 0;
 }
 
 button {
@@ -85,11 +88,15 @@ button,
   width: calc( 3 * var(--spacing-2) + 4 * var(--width-1));
 }
 
+html,
+#display-screen {
+  background-color: var(--color-light-1);
+}
+
 button,
 #display-screen
 {
   font-family: var(--font-Family-mono);
-  background-color: var(--color-light-1);
   border-radius: var(--borderRadius-1);
 }
 
@@ -107,6 +114,7 @@ button,
   align-items: flex-end;
   padding: var(--spacing-2) var(--spacing-2) var(--spacing-1) var(--spacing-2);
   font-size: var(--fontSize-2); 
+  border-radius: var(--borderRadius-2);
 }
 
 #expression {
@@ -169,4 +177,29 @@ button:hover {
 
 .equal {
   color: var(--color-light-1);
+}
+
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-Family-sans);
+  font-size: var(--fontSize-footer);
+  color: var(--color-primary-text);
+}
+
+.fa-github {
+  color: var(--color-primary-text);
+  transition: transform 0.3s ease-in-out;
+}
+
+.fa-github:hover {
+  transform: rotate(360deg) scale(1.2);
 }
