@@ -206,3 +206,17 @@ button:hover {
 .fa-github:hover {
   transform: rotate(360deg) scale(1.2);
 }
+
+/* scrollbar */
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-light-2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-light-tint);
+}
