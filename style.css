@@ -3,11 +3,11 @@
   --font-Family-mono: "Courier Prime", monospace;
   --fontSize-root: 45px;
   --spacing-1: 0.15rem;
-  --fontSize-1: 0.8rem;
+  --fontSize-1: 0.9rem;
   --fontSize-2: 1rem;
   --height-1: 1.8rem;
   --width-1: 2.3rem;
-  --width-2: calc( 1.5 * var(--width-1));
+  --width-2: calc( 1.7 * var(--width-1));
   --width-3: 8rem;
   --color-primary: rgb(236, 236, 236);
   --color-primary-dark: rgb(104, 104, 104);
@@ -37,7 +37,7 @@ button {
 }
 
 #expression {
-  font-size: calc( 0.8 * var(--fontSize-1) );
+  font-size: calc( 0.7 * var(--fontSize-1) );
   white-space: pre-wrap;
 }
 
@@ -73,6 +73,7 @@ button,
   height: var(--width-2);
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   padding: var(--spacing-1);
   font-size: var(--fontSize-1); 
 }
@@ -82,7 +83,6 @@ button,
 }
 
 #result{
-  align-self: flex-end;
   display: flex;
   align-items: flex-end;
 }

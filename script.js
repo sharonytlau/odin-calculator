@@ -1,6 +1,6 @@
-const operators = ['+', '-', '*', '/']
+const operators = ['+', '-', '*', '/'];
 
-const nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+const nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
 
 const validKeys = [...nums, ...operators];
 
@@ -66,6 +66,7 @@ let lastOperator = '+';
 let lastResult = 0;
 let secondNumFlag = false;
 let lastKey;
+let floatNumFlag;
 
 function updateExpressionFont () {
     
@@ -100,7 +101,7 @@ function updateDisplay(key) {
       if ( !operators.includes(lastKey) ) { 
         updateExpressionFont();
 
-        if (['*', '/'].includes(key) && ['+', '-'].includes(lastOperator)) {
+        if ( expressionDiv.textContent && ['*', '/'].includes(key) && ['+', '-'].includes(lastOperator)) {
           expressionDiv.textContent = '(' + expressionDiv.textContent + inputDiv.textContent + ')' + key;
         } else {
           expressionDiv.textContent += inputDiv.textContent + key;
@@ -109,12 +110,12 @@ function updateDisplay(key) {
         inputDiv.textContent = operate( lastOperator, Number(lastResult), 
                             parseFloat(inputDiv.textContent.replace(/,/g, '')) );
 
-        lastOperator = key;
         lastResult = inputDiv.textContent;
     } else {
       expressionDiv.textContent = expressionDiv.textContent.slice(0,expressionDiv.textContent.length-1) + key;
     }
-    
+
+    lastOperator = key;
     secondNumFlag = true;
     
   } 
