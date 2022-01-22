@@ -62,11 +62,18 @@ function getPressedKey(e) {
   if (keyPressed) updateDisplay(e.key);
 }
 
-let lastOperator = '+';
+let currentOperator = '+';
+let lastOperator;
 let lastResult = 0;
 let secondNumFlag = false;
+let floatNumFlag = false;
+let floatNum = 1;
 let lastKey;
-let floatNumFlag;
+
+function clearFloat () {
+  floatNumFlag = false;
+  floatNum = 1;
+}
 
 function updateExpressionFont () {
     
@@ -88,35 +95,56 @@ function updateExpressionFont () {
 
 function updateDisplay(key) {
 
+  if ( !validKeys.includes(key) ) return;
+
   if ( secondNumFlag && nums.includes(key)) {
     inputDiv.textContent = 0;
     secondNumFlag = false;
+    floatNumFlag = false;
   }
 
-  if ( !secondNumFlag && nums.includes(key) && inputDiv.textContent.length <= 18 )
-    inputDiv.textContent = (parseFloat(inputDiv.textContent.replace(/,/g, '')) * 10 +  Number(key)).toLocaleString('en');
+  if ( !secondNumFlag && nums.includes(key) && inputDiv.textContent.length <= 18 ) {
+
+    if ( !floatNumFlag && key === '.' ) {
+      inputDiv.textContent += key;
+      floatNumFlag = true;
+      floatNum = 1;
+    } else if ( floatNumFlag && key !== '.' ) {
+      // console.log(floatNum);
+      // console.log(parseFloat(inputDiv.textContent) );
+      // console.log( Number(key) / Math.pow(10,floatNum));
+      // console.log(parseFloat(inputDiv.textContent) + Number(key) / Math.pow(10,floatNum));
+      inputDiv.textContent = inputDiv.textContent + Number(key) ;
+      floatNum++;
+    } else if ( !floatNumFlag ) {
+      inputDiv.textContent =  parseFloat(inputDiv.textContent) * 10 +  Number(key) ;
+    }
+
+  }
 
   if ( operators.includes(key) ) {
   
-      if ( !operators.includes(lastKey) ) { 
-        updateExpressionFont();
+    if ( !operators.includes(lastKey) ) { 
+      updateExpressionFont();
 
-        if ( expressionDiv.textContent && ['*', '/'].includes(key) && ['+', '-'].includes(lastOperator)) {
-          expressionDiv.textContent = '(' + expressionDiv.textContent + inputDiv.textContent + ')' + key;
-        } else {
-          expressionDiv.textContent += inputDiv.textContent + key;
-        }
-        
-        inputDiv.textContent = operate( lastOperator, Number(lastResult), 
-                            parseFloat(inputDiv.textContent.replace(/,/g, '')) );
+      if ( expressionDiv.textContent && ['*', '/'].includes(key) && ['+', '-'].includes(lastOperator)) {
+        expressionDiv.textContent = '(' + expressionDiv.textContent + inputDiv.textContent + ')' + key;
+      } else {
+        expressionDiv.textContent += inputDiv.textContent + key;
+      }
+      
+      inputDiv.textContent = operate( currentOperator, Number(lastResult), 
+                          parseFloat(inputDiv.textContent.replace(/,/g, '')) );
 
-        lastResult = inputDiv.textContent;
+      lastOperator = currentOperator;
+      lastResult = inputDiv.textContent;
     } else {
       expressionDiv.textContent = expressionDiv.textContent.slice(0,expressionDiv.textContent.length-1) + key;
     }
 
-    lastOperator = key;
+    currentOperator = key;
     secondNumFlag = true;
+    floatNumFlag = false;
     
   } 
 
